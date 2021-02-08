@@ -18,6 +18,14 @@ export class StoreUtility {
   public static filterDuplicateIds(ids: number[]): number[] {
     return ids.filter((elem, index, self) => index === self.indexOf(elem));
   }
+
+  public static unNormalized(entities: { [p: number]: User }): any[] {
+    if (!entities) {
+      return [];
+    } else {
+      return Object.keys(entities).map(key => entities[key]);
+    }
+  }
 }
 
 interface Entity {

@@ -1,3 +1,4 @@
+import { Action } from './index';
 import { User } from '../models/user.model';
 
 export const USER_LIST_REQUEST = 'user list requested';
@@ -16,7 +17,7 @@ export const USER_LIST_ERROR = 'user list error';
  * */
 
 // action to request user to load
-export class UserListRequestAction {
+export class UserListRequestAction extends Action {
   readonly type = USER_LIST_REQUEST;
 }
 
