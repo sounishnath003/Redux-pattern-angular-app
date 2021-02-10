@@ -25,6 +25,7 @@ import { UpdateUserComponent } from './components/update-user.component';
 import { UserFilterPipe } from './pipes/user-filter.pipe';
 import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './reducers';
+import { RepositoryService } from './services/repository.service';
 
 @NgModule({
   declarations: [
@@ -54,9 +55,9 @@ import { rootReducer } from './reducers';
     FlexModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot(rootReducer)
+    StoreModule.forRoot(rootReducer),
   ],
-  providers: [HttpService, ApiService],
+  providers: [HttpService, ApiService, RepositoryService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

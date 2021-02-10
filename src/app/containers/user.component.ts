@@ -11,6 +11,7 @@ import {
 } from '../actions/user.action';
 import { getUsers } from '../reducers';
 import { combineLatest, Observable } from 'rxjs';
+import { RepositoryService } from '../services/repository.service';
 
 // reducer -> it contain a state (global state)
 // it will take an action -> it will return a new state
@@ -19,7 +20,7 @@ import { combineLatest, Observable } from 'rxjs';
 
 // Dependency Injection Principle
 // you should not depend on something directly
-// component -> youtube repo -> apiService -> http Service -> http client
+// component -> repo -> apiService -> http Service -> http client
 
 @Component({
   selector: `app-user`,
@@ -47,7 +48,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private matDialog: MatDialog,
     private apiServiceCall: ApiService,
     private dialog: MatDialog,
-    private store: Store<RootReducerState>
+    private repositoryService: RepositoryService
   ) {}
 
   ngOnDestroy(): void {
@@ -63,21 +64,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   fetchData(): void {
-    const loading$: Observable<boolean> = this.store.select(getUserLoading);
-    const loaded$: Observable<boolean> = this.store.select(getUserLoaded);
-    const getAllUsers: Observable<User[]> = this.store.select(getUsers);
-    // combine the latest subcriable users
-    // reduce [only intial load] the data fetching from API
-    combineLatest([loading$, loaded$]).subscribe((data: [boolean, boolean]) => {
-      if (!data[0] && !data[1]) {
-        this.store.dispatch(new UserListRequestAction());
-        this.apiServiceCall.getAllUsers().subscribe((users: User[]) => {
-          this.store.dispatch(new UserListSuccessAction({ data: users }));
-        });
-      } else {
-        getAllUsers.subscribe((users: User[]) => (this.users = users));
-      }
-    });
+    const { getAllUsers } = this.repositoryService.getUserList();
+    getAllUsers.subscribe((users: User[]) => (this.users = users));
   }
 
   tryAgain(): void {
