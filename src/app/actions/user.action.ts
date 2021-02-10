@@ -17,7 +17,7 @@ export const USER_LIST_ERROR = 'user list error';
  * */
 
 // action to request user to load
-export class UserListRequestAction extends Action {
+export class UserListRequestAction {
   readonly type = USER_LIST_REQUEST;
 }
 

@@ -23,6 +23,8 @@ import { ErrorComponent } from './components/error.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateUserComponent } from './components/update-user.component';
 import { UserFilterPipe } from './pipes/user-filter.pipe';
+import { StoreModule } from '@ngrx/store';
+import { rootReducer } from './reducers';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
     FlexModule,
     FormsModule,
     ReactiveFormsModule,
+    StoreModule.forRoot(rootReducer)
   ],
   providers: [HttpService, ApiService],
   bootstrap: [AppComponent],

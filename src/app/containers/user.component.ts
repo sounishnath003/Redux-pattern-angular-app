@@ -3,6 +3,14 @@ import { User } from '../models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
 import { UpdateUserComponent } from '../components/update-user.component';
+import { Store } from '@ngrx/store';
+import { getUserLoaded, getUserLoading, RootReducerState } from '../reducers';
+import {
+  UserListRequestAction,
+  UserListSuccessAction,
+} from '../actions/user.action';
+import { getUsers } from '../reducers';
+import { combineLatest, Observable } from 'rxjs';
 
 // reducer -> it contain a state (global state)
 // it will take an action -> it will return a new state
@@ -38,7 +46,8 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(
     private matDialog: MatDialog,
     private apiServiceCall: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private store: Store<RootReducerState>
   ) {}
 
   ngOnDestroy(): void {
@@ -54,9 +63,21 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   fetchData(): void {
-    this.apiServiceCall
-      .getAllUsers()
-      .subscribe((users: User[]) => (this.users = users));
+    const loading$: Observable<boolean> = this.store.select(getUserLoading);
+    const loaded$: Observable<boolean> = this.store.select(getUserLoaded);
+    const getAllUsers: Observable<User[]> = this.store.select(getUsers);
+    // combine the latest subcriable users
+    // reduce [only intial load] the data fetching from API
+    combineLatest([loading$, loaded$]).subscribe((data: [boolean, boolean]) => {
+      if (!data[0] && !data[1]) {
+        this.store.dispatch(new UserListRequestAction());
+        this.apiServiceCall.getAllUsers().subscribe((users: User[]) => {
+          this.store.dispatch(new UserListSuccessAction({ data: users }));
+        });
+      } else {
+        getAllUsers.subscribe((users: User[]) => (this.users = users));
+      }
+    });
   }
 
   tryAgain(): void {
