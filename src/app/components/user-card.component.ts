@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../models/user.model';
 import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {UpdateUserComponent} from './update-user.component';
 
 @Component({
   selector: `app-user-card`,
@@ -24,7 +26,7 @@ import {Router} from '@angular/router';
 export class UserCardComponent implements OnInit {
   @Input() user: User;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -34,6 +36,7 @@ export class UserCardComponent implements OnInit {
   }
 
   update(): void {
+    this.dialog.open(UpdateUserComponent, {width: `300px`, data: this.user});
   }
 
   open(): void {

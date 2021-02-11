@@ -1,18 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
-import {
-  UserListRequestAction,
-  UserListSuccessAction,
-} from '../actions/user.action';
-import { User } from '../models/user.model';
-import {
-  getUserLoaded,
-  getUserLoading,
-  getUsers,
-  RootReducerState,
-} from '../reducers';
-import { ApiService } from './api.service';
+import {Injectable} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {combineLatest, Observable} from 'rxjs';
+import {UserListAddAction, UserListRequestAction, UserListSuccessAction,} from '../actions/user.action';
+import {User} from '../models/user.model';
+import {getUserById, getUserLoaded, getUserLoading, getUsers, RootReducerState,} from '../reducers';
+import {ApiService} from './api.service';
+import {take} from 'rxjs/operators';
 
 /*
  * This custom service made to maintain Single Responsibility Principle
@@ -34,7 +27,8 @@ export class RepositoryService {
   constructor(
     private store: Store<RootReducerState>,
     private apiServiceCall: ApiService
-  ) {}
+  ) {
+  }
 
   /**
    * getUserList
@@ -50,10 +44,25 @@ export class RepositoryService {
       if ((!data[0] && !data[1]) || force) {
         this.store.dispatch(new UserListRequestAction());
         this.apiServiceCall.getAllUsers().subscribe((users: User[]) => {
-          this.store.dispatch(new UserListSuccessAction({ data: users }));
+          this.store.dispatch(new UserListSuccessAction({data: users}));
         });
       }
     });
-    return { loading$, getAllUsers };
+    return {loading$, getAllUsers};
+  }
+
+  /**
+   * getUserById
+   */
+  public getUserById(id: number, force: boolean = false): Observable<User> {
+    const user$ = this.store.select(state => getUserById(state, id));
+    user$.pipe(take(1)).subscribe(res => {
+      if (force || !res) {
+        this.store.dispatch(new UserListAddAction());
+        return this.apiServiceCall.getUserById(id);
+      }
+      return res;
+    });
+    return user$;
   }
 }

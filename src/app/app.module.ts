@@ -26,6 +26,7 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
 import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './reducers';
 import { RepositoryService } from './services/repository.service';
+import {ViewUserComponent} from './containers/view-user.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { RepositoryService } from './services/repository.service';
     ErrorComponent,
     UpdateUserComponent,
     UserFilterPipe,
+    ViewUserComponent
   ],
   imports: [
     BrowserModule,
