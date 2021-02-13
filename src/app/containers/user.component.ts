@@ -1,17 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../models/user.model';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '../services/api.service';
-import { UpdateUserComponent } from '../components/update-user.component';
-import { Store } from '@ngrx/store';
-import { getUserLoaded, getUserLoading, RootReducerState } from '../reducers';
-import {
-  UserListRequestAction,
-  UserListSuccessAction,
-} from '../actions/user.action';
-import { getUsers } from '../reducers';
-import { combineLatest, Observable } from 'rxjs';
-import { RepositoryService } from '../services/repository.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../models/user.model';
+import {MatDialog} from '@angular/material/dialog';
+import {ApiService} from '../services/api.service';
+import {UpdateUserComponent} from '../components/update-user.component';
+import {RepositoryService} from '../services/repository.service';
 
 // reducer -> it contain a state (global state)
 // it will take an action -> it will return a new state
@@ -49,14 +41,15 @@ export class UserComponent implements OnInit, OnDestroy {
     private apiServiceCall: ApiService,
     private dialog: MatDialog,
     private repositoryService: RepositoryService
-  ) {}
+  ) {
+  }
 
   ngOnDestroy(): void {
     this.isAvail = false;
   }
 
   addUser(): void {
-    this.dialog.open(UpdateUserComponent, { width: '300px' });
+    this.dialog.open(UpdateUserComponent, {width: '300px'});
   }
 
   ngOnInit(): void {
@@ -64,7 +57,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   fetchData(): void {
-    const { getAllUsers } = this.repositoryService.getUserList();
+    const {getAllUsers} = this.repositoryService.getUserList();
     getAllUsers.subscribe((users: User[]) => (this.users = users));
   }
 

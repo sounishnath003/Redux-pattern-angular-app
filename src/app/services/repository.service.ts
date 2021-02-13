@@ -55,11 +55,13 @@ export class RepositoryService {
    * getUserById
    */
   public getUserById(id: number, force: boolean = false): Observable<User> {
+    // tslint:disable-next-line:no-shadowed-variable
     const user$ = this.store.select(state => getUserById(state, id));
-    user$.pipe(take(1)).subscribe(res => {
+    user$.pipe(take(1)).subscribe((res: User) => {
       if (force || !res) {
-        this.store.dispatch(new UserListAddAction());
-        return this.apiServiceCall.getUserById(id);
+        return this.apiServiceCall.getUser(id).subscribe(data => {
+          this.store.dispatch(new UserListAddAction({data}));
+        });
       }
       return res;
     });

@@ -12,9 +12,7 @@ export class UserFilterPipe implements PipeTransform {
     }
     const updatedUserFilterList: User[] = users.filter((user: User) => {
       const fullName = (
-        user.first_name +
-        ' ' +
-        user.last_name
+        user.email
       ).toLocaleLowerCase();
       return fullName.indexOf(searchTerm.toLocaleLowerCase()) !== -1;
     });

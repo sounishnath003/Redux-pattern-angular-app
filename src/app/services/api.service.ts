@@ -14,7 +14,7 @@ export class ApiService {
     return this.httpService.get('/users');
   }
 
-  getUserById(id: number): Observable<User[]> {
-    return this.httpService.get('/users/' + id);
+  getUser(id: number): Observable<any> {
+    return this.httpService.get(`/users/${id}`);
   }
 }
