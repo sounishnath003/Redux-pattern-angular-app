@@ -37,14 +37,15 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      name: new FormControl(
-        this.data ? `${this.data.first_name} ${this.data.last_name}` : null,
+      email: new FormControl(
+        this.data ? `${this.data.email} ` : null,
         [Validators.required]
       ),
-      email: new FormControl(this.data ? this.data.email : null, [
+      name: new FormControl(this.data ? (this.data.username) : null, [
         Validators.required,
       ]),
     });
+    console.log(this.data);
   }
 
   addOrUpdateUser(): void {

@@ -9,7 +9,7 @@ import { filter, map, switchMap, takeWhile } from 'rxjs/operators';
   template: `
     <h1>{{ this.user ? this.user.email : '' }}</h1>
     <h1>
-      {{ this.user ? this.user.first_name + ' ' + this.user.last_name : '' }}
+      {{ this.user ? this.user.name : '' }}
     </h1>
   `,
 })

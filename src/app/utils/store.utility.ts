@@ -1,6 +1,7 @@
 import { User } from '../models/user.model';
 
 export class StoreUtility {
+  // tslint:disable-next-line:typedef
   public static normalizeFormat(users: Entity[]) {
     return users.reduce((previousValue, currentValue) => {
       return { ...previousValue, ...{ [currentValue.id]: currentValue } };

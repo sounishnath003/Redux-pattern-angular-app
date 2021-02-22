@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {combineLatest, Observable} from 'rxjs';
-import {UserListAddAction, UserListRequestAction, UserListSuccessAction,} from '../actions/user.action';
+import {UserListAddAction, UserListDeleteAction, UserListRequestAction, UserListSuccessAction,} from '../actions/user.action';
 import {User} from '../models/user.model';
 import {getUserById, getUserLoaded, getUserLoading, getUsers, RootReducerState,} from '../reducers';
 import {ApiService} from './api.service';
@@ -49,6 +49,12 @@ export class RepositoryService {
       }
     });
     return {loading$, getAllUsers};
+  }
+
+
+  public deleteUserById(id: number): void {
+    // we will actual delete API (cause we have not till now!!)
+    this.store.dispatch(new UserListDeleteAction({id}));
   }
 
   /**

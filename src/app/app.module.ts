@@ -27,6 +27,7 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './reducers';
 import { RepositoryService } from './services/repository.service';
 import {ViewUserComponent} from './containers/view-user.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import {ViewUserComponent} from './containers/view-user.component';
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot(rootReducer),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [HttpService, ApiService, RepositoryService],
   bootstrap: [AppComponent],
