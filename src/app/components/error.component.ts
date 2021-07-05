@@ -14,7 +14,7 @@ import { EventEmitter } from 'events';
   `,
 })
 export class ErrorComponent implements OnInit {
-  @Output() reload: EventEmitter = new EventEmitter();
+  @Output() reload: EventEmitter<any> = new EventEmitter<any>();
   @Input() errorTitle;
 
   constructor() {}

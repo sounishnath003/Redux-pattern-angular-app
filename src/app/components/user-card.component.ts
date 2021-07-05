@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../models/user.model';
 import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {UpdateUserComponent} from './update-user.component';
+import {RepositoryService} from '../services/repository.service';
 
 @Component({
   selector: `app-user-card`,
@@ -12,9 +15,9 @@ import {Router} from '@angular/router';
       fxLayoutGap="30px"
       fxLayoutAlign="start stretch"
     >
-      <mat-card-title>{{ this.user.first_name }} {{ user.last_name }} </mat-card-title>
+      <mat-card-title>{{ this.user.name }} </mat-card-title>
       <mat-card-content>{{ this.user.email }}</mat-card-content>
-      <button (click)="delete()" mat-raised-button color="warn">Delete</button>
+      <button (click)="delete(this.user.id)" mat-raised-button color="warn">Delete</button>
       <button (click)="update()" mat-raised-button color="primary">
         Update
       </button>
@@ -24,16 +27,18 @@ import {Router} from '@angular/router';
 export class UserCardComponent implements OnInit {
   @Input() user: User;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dialog: MatDialog, private repositoryService: RepositoryService) {
   }
 
   ngOnInit(): void {
   }
 
-  delete(): void {
+  delete(id: number): void {
+    this.repositoryService.deleteUserById(id);
   }
 
   update(): void {
+    this.dialog.open(UpdateUserComponent, {width: `300px`, data: this.user});
   }
 
   open(): void {

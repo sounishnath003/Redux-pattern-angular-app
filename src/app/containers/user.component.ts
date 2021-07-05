@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../models/user.model';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '../services/api.service';
-import { UpdateUserComponent } from '../components/update-user.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../models/user.model';
+import {MatDialog} from '@angular/material/dialog';
+import {ApiService} from '../services/api.service';
+import {UpdateUserComponent} from '../components/update-user.component';
+import {RepositoryService} from '../services/repository.service';
 
 // reducer -> it contain a state (global state)
 // it will take an action -> it will return a new state
@@ -11,7 +12,7 @@ import { UpdateUserComponent } from '../components/update-user.component';
 
 // Dependency Injection Principle
 // you should not depend on something directly
-// component -> youtube repo -> apiService -> http Service -> http client
+// component -> repo -> apiService -> http Service -> http client
 
 @Component({
   selector: `app-user`,
@@ -38,15 +39,17 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(
     private matDialog: MatDialog,
     private apiServiceCall: ApiService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private repositoryService: RepositoryService
+  ) {
+  }
 
   ngOnDestroy(): void {
     this.isAvail = false;
   }
 
   addUser(): void {
-    this.dialog.open(UpdateUserComponent, { width: '300px' });
+    this.dialog.open(UpdateUserComponent, {width: '300px'});
   }
 
   ngOnInit(): void {
@@ -54,9 +57,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   fetchData(): void {
-    this.apiServiceCall
-      .getAllUsers()
-      .subscribe((users: User[]) => (this.users = users));
+    const {getAllUsers} = this.repositoryService.getUserList();
+    getAllUsers.subscribe((users: User[]) => (this.users = users));
   }
 
   tryAgain(): void {

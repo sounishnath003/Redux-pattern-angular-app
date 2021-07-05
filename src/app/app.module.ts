@@ -23,6 +23,11 @@ import { ErrorComponent } from './components/error.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateUserComponent } from './components/update-user.component';
 import { UserFilterPipe } from './pipes/user-filter.pipe';
+import { StoreModule } from '@ngrx/store';
+import { rootReducer } from './reducers';
+import { RepositoryService } from './services/repository.service';
+import {ViewUserComponent} from './containers/view-user.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,7 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
     ErrorComponent,
     UpdateUserComponent,
     UserFilterPipe,
+    ViewUserComponent
   ],
   imports: [
     BrowserModule,
@@ -52,8 +58,10 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
     FlexModule,
     FormsModule,
     ReactiveFormsModule,
+    StoreModule.forRoot(rootReducer),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
-  providers: [HttpService, ApiService],
+  providers: [HttpService, ApiService, RepositoryService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
